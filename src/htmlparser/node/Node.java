@@ -27,6 +27,8 @@ public class Node {
 	public void replaceOne(Node node) {
 		replaceTree(node);
 		moveChildTo(node);
+		assert isAloneAndFree();
+		assert size == 0;
 	}
 
 	public void replaceTree(Node node) {
@@ -91,6 +93,7 @@ public class Node {
 		node.parent = this;
 		assert !node.isFree();
 		assert isAvailable();
+		assert childFirst == node;
 	}
 
 	public void insertChildLast(Node node) {
@@ -105,6 +108,7 @@ public class Node {
 		node.parent = this;
 		assert !node.isFree();
 		assert isAvailable();
+		assert childLast == node;
 	}
 	public void insertBefore(Node node) {
 		assert node.isAloneAndFree();
@@ -186,9 +190,13 @@ public class Node {
 	public boolean isAvailable() {
 		boolean available;
 		available = size == 0 ?childFirst == null && childLast == null: childFirst != null && childLast != null;
+		assert available;
 		available &= size == 1 ?childFirst == childLast: true;
+		assert available;
 		available &= size >= 0;
+		assert available;
 		available &= prev != null ?prev.next == this: true;
+		assert available;
 		available &= next != null ?next.prev == this: true;
 		assert available:"Node state isn't available.";
 		return available;
