@@ -42,11 +42,11 @@ public class Node {
 		} else if (next != null) {
 			Node temp=next;
 			remove();
-			next.insertBefore(node);
+			temp.insertBefore(node);
 		} else if (parent != null) {
 			Node temp=parent;
 			remove();
-			parent.insertChildFirst(node);
+			temp.insertChildFirst(node);
 		}
 		assert this.isAloneAndFree();
 		assert !node.isAloneAndFree();
@@ -56,10 +56,10 @@ public class Node {
 		if (parent != null) {
 			parent.size--;
 			if (parent.childFirst == this) {
-				parent.childFirst = null;
+				parent.childFirst = next;
 			}
-			if (parent.childLast == null) {
-				parent.childLast = null;
+			if (parent.childLast == this) {
+				parent.childLast = prev;
 			}
 			assert parent.isAvailable();
 		}
@@ -86,24 +86,23 @@ public class Node {
 			childLast = node;
 			size = 1;
 		} else {
-			size++;
 			childFirst.insertBefore(node);
 		}
+		node.parent = this;
 		assert !node.isFree();
 		assert isAvailable();
 	}
 
 	public void insertChildLast(Node node) {
 		assert node.isAloneAndFree();
-		node.parent = this;
 		if (size == 0) {
 			childFirst = node;
 			childLast = node;
 			size = 1;
 		} else {
-			size++;
 			childLast.insertAfter(node);
 		}
+		node.parent = this;
 		assert !node.isFree();
 		assert isAvailable();
 	}
